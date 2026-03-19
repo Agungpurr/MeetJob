@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduMeetJob — Platform Karier Digital Indonesia</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04081a;--s1:#080e24;--s2:#0d1535;--s3:#111c40;
+  --cyan:#00d4ff;--violet:#7b5fff;--pink:#ff5fa0;--green:#2dcc7a;
+  --gold:#ffd060;--red:#f87171;--blue:#38bdf8;
+  --text:#e8eeff;--muted:#7a8ab0;--border:rgba(0,212,255,.13);
+  --ff:'Syne',sans-serif;--fb:'DM Sans',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{font-family:var(--fb);cursor:pointer;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px;}
+
+/* ══════════════ SIDEBAR ══════════════ */
+#sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:236px;
+  background:rgba(4,8,26,.97);backdrop-filter:blur(24px);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:200;
+}
+.sb-logo{padding:22px 18px 16px;border-bottom:1px solid var(--border);}
+.sb-logo-name{
+  font-family:var(--ff);font-weight:800;font-size:1.4rem;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.sb-logo-tag{
+  display:inline-block;margin-top:4px;
+  font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:3px 9px;border-radius:100px;
+  background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);color:var(--cyan);
+}
+
+.sb-nav{flex:1;padding:12px 10px;overflow-y:auto;}
+.sb-sec{font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:8px 8px 4px;}
+.sb-item{
+  display:flex;align-items:center;gap:9px;padding:9px 10px;
+  border-radius:10px;font-size:.82rem;font-weight:500;color:var(--muted);
+  cursor:pointer;transition:.2s;margin-bottom:2px;border:1px solid transparent;
+}
+.sb-item:hover{background:rgba(0,212,255,.07);color:var(--text);}
+.sb-item.active{background:rgba(0,212,255,.12);color:var(--cyan);border-color:rgba(0,212,255,.18);}
+.sb-ico{font-size:.92rem;width:20px;text-align:center;}
+.sb-new{margin-left:auto;font-size:.54rem;font-weight:800;padding:2px 6px;border-radius:100px;
+  background:rgba(45,204,122,.15);color:var(--green);border:1px solid rgba(45,204,122,.2);}
+
+.sb-foot{padding:14px;border-top:1px solid var(--border);}
+.sb-profile{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+.sb-av{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:.88rem;color:#fff;font-family:var(--ff);
+}
+.sb-un{font-size:.8rem;font-weight:700;}
+.sb-ur{font-size:.6rem;color:var(--cyan);}
+.sb-xp{
+  background:linear-gradient(135deg,rgba(0,212,255,.1),rgba(123,95,255,.1));
+  border:1px solid rgba(0,212,255,.15);border-radius:8px;
+  padding:7px 10px;font-size:.65rem;color:var(--muted);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.sb-xp-val{color:var(--cyan);font-weight:800;font-size:.72rem;}
+
+/* ══════════════ MAIN ══════════════ */
+#main{margin-left:236px;min-height:100vh;}
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(4,8,26,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:13px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tb-title{font-family:var(--ff);font-weight:700;font-size:1rem;}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.tb-chip{padding:5px 12px;border-radius:100px;font-size:.62rem;font-weight:700;
+  background:rgba(123,95,255,.12);border:1px solid rgba(123,95,255,.2);color:var(--violet);}
+.tb-notif{
+  width:34px;height:34px;border-radius:9px;
+  background:var(--s1);border:1px solid var(--border);
+  color:var(--muted);font-size:.85rem;cursor:pointer;transition:.2s;
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+.tb-notif:hover{border-color:var(--cyan);color:var(--cyan);}
+.notif-dot{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--pink);}
+
+.page{display:none;padding:26px;}
+.page.active{display:block;}
+
+/* ══════════════ SHARED ══════════════ */
+.ph{margin-bottom:1.2rem;}
+.ph h2{font-family:var(--ff);font-weight:800;font-size:1.35rem;margin-bottom:.2rem;}
+.ph p{color:var(--muted);font-size:.82rem;}
+
+.card{background:var(--s1);border:1px solid var(--border);border-radius:14px;}
+.card-p{padding:1.2rem;}
+
+.tag{padding:3px 9px;border-radius:100px;font-size:.6rem;font-weight:700;}
+.tag-cyan{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.18);color:var(--cyan);}
+.tag-violet{background:rgba(123,95,255,.1);border:1px solid rgba(123,95,255,.18);color:var(--violet);}
+.tag-pink{background:rgba(255,95,160,.1);border:1px solid rgba(255,95,160,.18);color:var(--pink);}
+.tag-green{background:rgba(45,204,122,.1);border:1px solid rgba(45,204,122,.18);color:var(--green);}
+.tag-gold{background:rgba(255,208,96,.1);border:1px solid rgba(255,208,96,.18);color:var(--gold);}
+
+.btn-primary{
+  padding:10px 22px;border-radius:9px;border:none;
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  color:#fff;font-weight:700;font-size:.82rem;font-family:var(--ff);
+  cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;
+}
+.btn-primary:hover{opacity:.85;transform:translateY(-1px);}
+.btn-outline{
+  padding:10px 22px;border-radius:9px;
+  border:1px solid var(--border);background:rgba(255,255,255,.03);
+  color:var(--text);font-size:.82rem;font-weight:500;cursor:pointer;transition:.2s;
+}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan);}
+
+.progress-wrap{margin-top:.5rem;}
+.progress-info{display:flex;justify-content:space-between;font-size:.65rem;color:var(--muted);margin-bottom:.3rem;}
+.progress-bar{height:5px;background:var(--s3);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:3px;transition:.8s ease-out;}
+.fill-cyan{background:linear-gradient(90deg,var(--violet),var(--cyan));}
+.fill-green{background:linear-gradient(90deg,#00b09b,var(--green));}
+.fill-gold{background:linear-gradient(90deg,var(--pink),var(--gold));}
+
+.input{
+  background:var(--s2);border:1px solid var(--border);
+  color:var(--text);border-radius:9px;padding:9px 13px;
+  font-size:.83rem;font-family:var(--fb);width:100%;transition:.2s;
+}
+.input:focus{outline:none;border-color:var(--cyan);}
+.select{
+  background:var(--s2);border:1px solid var(--border);
+  color:var(--text);border-radius:9px;padding:9px 13px;
+  font-size:.83rem;font-family:var(--fb);width:100%;transition:.2s;appearance:none;
+}
+.select:focus{outline:none;border-color:var(--cyan);}
+.label{font-size:.72rem;color:var(--muted);font-weight:600;display:block;margin-bottom:.35rem;}
+
+/* ══════════════ DASHBOARD ══════════════ */
+.d-hero{
+  background:linear-gradient(135deg,var(--s2),var(--s3));
+  border:1px solid rgba(0,212,255,.15);border-radius:18px;
+  padding:1.8rem 2rem;margin-bottom:1.2rem;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.d-hero::before{
+  content:'';position:absolute;right:-60px;top:-60px;
+  width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(123,95,255,.25),transparent 70%);
+}
+.d-hero h2{font-family:var(--ff);font-weight:800;font-size:1.5rem;margin-bottom:.3rem;}
+.d-hero p{color:var(--muted);font-size:.85rem;max-width:420px;line-height:1.6;}
+.d-hero-actions{display:flex;gap:.7rem;margin-top:1rem;flex-wrap:wrap;}
+.d-score-box{
+  flex-shrink:0;background:rgba(0,212,255,.07);
+  border:1px solid rgba(0,212,255,.15);border-radius:14px;
+  padding:1rem 1.4rem;text-align:center;position:relative;z-index:1;
+}
+.dsb-val{font-family:var(--ff);font-weight:800;font-size:2rem;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.dsb-lbl{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+
+.d-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1.2rem;}
+.kpi{background:var(--s1);border:1px solid var(--border);border-radius:13px;padding:1.1rem;transition:.25s;}
+.kpi:hover{border-color:rgba(0,212,255,.25);transform:translateY(-2px);}
+.kpi-ico{font-size:1.3rem;margin-bottom:.5rem;}
+.kpi-val{font-family:var(--ff);font-weight:800;font-size:1.55rem;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi-lbl{font-size:.67rem;color:var(--muted);}
+.kpi-delta{font-size:.62rem;color:var(--green);font-weight:700;margin-top:.25rem;}
+
+.d-row{display:grid;grid-template-columns:2fr 1.2fr;gap:.9rem;}
+.panel-title{font-family:var(--ff);font-weight:700;font-size:.88rem;margin-bottom:.9rem;display:flex;align-items:center;justify-content:space-between;}
+.panel-link{font-size:.68rem;color:var(--cyan);font-weight:600;cursor:pointer;}
+
+.act-list{display:flex;flex-direction:column;gap:.55rem;}
+.act{display:flex;align-items:center;gap:10px;padding:.6rem;border-radius:9px;background:var(--s2);}
+.act-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;}
+.act-t{font-size:.78rem;font-weight:500;}
+.act-s{font-size:.65rem;color:var(--muted);}
+.act-ts{margin-left:auto;font-size:.62rem;color:var(--muted);white-space:nowrap;}
+
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;}
+.qa{padding:.85rem;border-radius:10px;border:1px solid var(--border);background:var(--s2);text-align:center;cursor:pointer;transition:.2s;}
+.qa:hover{border-color:var(--cyan);background:rgba(0,212,255,.06);}
+.qa-ic{font-size:1.2rem;margin-bottom:.3rem;}
+.qa-lb{font-size:.7rem;font-weight:600;}
+
+/* ══════════════ AI JOB MATCHING ══════════════ */
+.jm-layout{display:grid;grid-template-columns:300px 1fr;gap:1rem;}
+
+.jm-filter{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1.2rem;height:fit-content;position:sticky;top:70px;}
+.jm-filter-title{font-family:var(--ff);font-weight:700;font-size:.88rem;margin-bottom:1rem;}
+.fg{margin-bottom:.9rem;}
+.fg .label{margin-bottom:.3rem;}
+
+.skill-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem;}
+.skill-chip{
+  padding:4px 10px;border-radius:100px;font-size:.65rem;font-weight:600;
+  background:rgba(123,95,255,.1);border:1px solid rgba(123,95,255,.18);color:var(--violet);
+  cursor:pointer;transition:.2s;
+}
+.skill-chip:hover,.skill-chip.on{background:rgba(123,95,255,.2);border-color:var(--violet);}
+
+.jm-results{display:flex;flex-direction:column;gap:.9rem;}
+
+.job-card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:14px;padding:1.3rem;
+  transition:.25s;cursor:pointer;position:relative;overflow:hidden;
+}
+.job-card:hover{border-color:rgba(0,212,255,.3);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.4);}
+.job-card.featured::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--violet),var(--cyan));
+}
+.jc-top{display:flex;align-items:flex-start;gap:.9rem;margin-bottom:.8rem;}
+.jc-logo{
+  width:46px;height:46px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;background:var(--s2);border:1px solid var(--border);
+}
+.jc-title{font-family:var(--ff);font-weight:700;font-size:.95rem;margin-bottom:.2rem;}
+.jc-company{font-size:.75rem;color:var(--muted);}
+.jc-match{
+  margin-left:auto;flex-shrink:0;
+  width:50px;height:50px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:2px solid var(--cyan);
+  background:rgba(0,212,255,.07);
+}
+.jc-match-pct{font-family:var(--ff);font-weight:800;font-size:.82rem;color:var(--cyan);line-height:1;}
+.jc-match-lbl{font-size:.45rem;color:var(--muted);text-transform:uppercase;}
+.jc-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.8rem;}
+.jc-bottom{display:flex;align-items:center;justify-content:space-between;}
+.jc-meta{font-size:.72rem;color:var(--muted);display:flex;gap:.8rem;}
+.jc-meta span{display:flex;align-items:center;gap:3px;}
+.jc-apply{
+  padding:7px 16px;border-radius:8px;border:none;
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  color:#fff;font-weight:700;font-size:.75rem;font-family:var(--ff);cursor:pointer;transition:.2s;
+}
+.jc-apply:hover{opacity:.85;}
+
+.ai-insight{
+  margin-top:.7rem;padding:.7rem .9rem;border-radius:9px;
+  background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(123,95,255,.04));
+  border:1px solid rgba(0,212,255,.12);
+  font-size:.75rem;color:var(--muted);display:flex;align-items:flex-start;gap:.5rem;
+}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:4px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+
+/* ══════════════ SKILL GAP ══════════════ */
+.sg-layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+
+.sg-radar{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:14px;padding:1.4rem;
+  display:flex;flex-direction:column;align-items:center;
+}
+.radar-svg{width:240px;height:240px;}
+
+.sg-list{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1.4rem;}
+.sg-item{margin-bottom:1rem;}
+.sg-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem;}
+.sg-item-name{font-size:.82rem;font-weight:600;}
+.sg-item-diff{font-size:.7rem;font-weight:700;}
+.sg-bars{display:flex;flex-direction:column;gap:.25rem;}
+.sg-bar-row{display:flex;align-items:center;gap:.5rem;}
+.sg-bar-lbl{font-size:.6rem;color:var(--muted);width:40px;text-align:right;flex-shrink:0;}
+.sg-bar-track{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden;}
+.sg-bar-fill{height:100%;border-radius:3px;transition:.8s ease-out;}
+
+.sg-reco{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1.2rem;}
+.sg-reco-title{font-family:var(--ff);font-weight:700;font-size:.88rem;margin-bottom:.8rem;}
+.reco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;}
+.reco-card{
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:11px;padding:.9rem;transition:.2s;cursor:pointer;
+}
+.reco-card:hover{border-color:var(--violet);}
+.reco-icon{font-size:1.4rem;margin-bottom:.4rem;}
+.reco-skill{font-family:var(--ff);font-weight:700;font-size:.82rem;margin-bottom:.2rem;}
+.reco-impact{font-size:.65rem;color:var(--green);font-weight:600;}
+.reco-time{font-size:.62rem;color:var(--muted);}
+
+/* ══════════════ PERSONALIZED TRAINING ══════════════ */
+.pt-layout{display:grid;grid-template-columns:1fr 340px;gap:1rem;}
+
+.pt-path{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1.3rem;}
+.pt-path-title{font-family:var(--ff);font-weight:700;font-size:.92rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;}
+
+.path-track{position:relative;padding-left:1.8rem;}
+.path-track::before{
+  content:'';position:absolute;left:8px;top:0;bottom:0;
+  width:2px;background:linear-gradient(180deg,var(--violet),var(--cyan),transparent);
+}
+.path-item{
+  position:relative;padding:1rem 1rem 1rem .8rem;
+  margin-bottom:.8rem;
+  background:var(--s2);border:1px solid var(--border);
+  border-radius:12px;transition:.2s;cursor:pointer;
+}
+.path-item:hover{border-color:rgba(123,95,255,.3);}
+.path-item.active-course{border-color:var(--violet);background:rgba(123,95,255,.07);}
+.path-item::before{
+  content:'';position:absolute;left:-1.5rem;top:1.2rem;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--s3);border:2px solid var(--muted);
+}
+.path-item.done::before{background:var(--green);border-color:var(--green);box-shadow:0 0 10px rgba(45,204,122,.4);}
+.path-item.active-course::before{background:var(--violet);border-color:var(--violet);box-shadow:0 0 10px rgba(123,95,255,.5);}
+.pi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.3rem;}
+.pi-title{font-family:var(--ff);font-weight:700;font-size:.88rem;}
+.pi-meta{font-size:.68rem;color:var(--muted);display:flex;gap:.7rem;margin-bottom:.5rem;}
+.pi-actions{display:flex;gap:.4rem;margin-top:.6rem;}
+.pi-btn{
+  padding:5px 12px;border-radius:7px;font-size:.7rem;font-weight:700;
+  border:1px solid var(--border);background:transparent;
+  color:var(--muted);cursor:pointer;transition:.2s;font-family:var(--fb);
+}
+.pi-btn:hover,.pi-btn.primary{
+  background:linear-gradient(135deg,var(--violet),var(--cyan));
+  border-color:transparent;color:#fff;
+}
+
+.pt-sidebar{display:flex;flex-direction:column;gap:.9rem;}
+.pt-stats{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1.2rem;}
+.pt-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.6rem;}
+.pt-stat{background:var(--s2);border-radius:9px;padding:.7rem;text-align:center;}
+.pt-stat-val{font-family:var(--ff);font-weight:800;font-size:1.2rem;color:var(--cyan);}
+.pt-stat-lbl{font-size:.6rem;color:var(--muted);}
+
+.cert-list{display:flex;flex-direction:column;gap:.5rem;}
+.cert-item{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.6rem;border-radius:9px;background:var(--s2);
+}
+.cert-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;flex-shrink:0;}
+.cert-name{font-size:.78rem;font-weight:600;}
+.cert-org{font-size:.62rem;color:var(--muted);}
+.cert-check{margin-left:auto;color:var(--green);font-size:.9rem;}
+
+/* ══════════════ ANALITIK ══════════════ */
+.an-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-bottom:1rem;}
+.an-charts{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:.9rem;margin-bottom:1rem;}
+.chart-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1.2rem;}
+.chart-title{font-size:.82rem;font-weight:700;margin-bottom:.2rem;}
+.chart-sub{font-size:.62rem;color:var(--muted);margin-bottom:.8rem;}
+
+.bar-chart{display:flex;align-items:flex-end;gap:.35rem;height:110px;}
+.bc-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:.2rem;}
+.bc-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;
+  background:linear-gradient(180deg,var(--cyan),rgba(0,212,255,.25));transition:.8s;}
+.bc-bar:hover{filter:brightness(1.2);}
+.bc-lbl{font-size:.54rem;color:var(--muted);}
+.bc-val{font-size:.54rem;color:var(--cyan);font-weight:700;}
+
+.donut-wr{display:flex;align-items:center;gap:.9rem;}
+.donut-svg{width:90px;height:90px;flex-shrink:0;}
+.dl-list{display:flex;flex-direction:column;gap:.3rem;}
+.dl{display:flex;align-items:center;gap:.35rem;font-size:.65rem;}
+.dl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+.lc-svg{width:100%;height:90px;}
+.lc-lbl{display:flex;justify-content:space-between;font-size:.52rem;color:var(--muted);margin-top:.2rem;}
+
+.an-table{background:var(--s1);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.tbl-head{padding:.85rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.tbl-title{font-size:.83rem;font-weight:700;}
+.tbl-search{background:var(--s2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:5px 11px;font-size:.73rem;font-family:var(--fb);width:155px;}
+.tbl-search:focus{outline:none;border-color:var(--cyan);}
+table{width:100%;border-collapse:collapse;}
+th{padding:.6rem 1.1rem;text-align:left;font-size:.62rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--border);}
+td{padding:.7rem 1.1rem;font-size:.77rem;border-bottom:1px solid rgba(0,212,255,.04);transition:.15s;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(0,212,255,.025);}
+.td-chip{padding:3px 9px;border-radius:100px;font-size:.58rem;font-weight:700;}
+.spk{display:inline-flex;gap:2px;align-items:flex-end;height:16px;vertical-align:middle;}
+.sp{width:3px;border-radius:2px;}
+
+/* ══════════════ WILAYAH ══════════════ */
+.wl-layout{display:grid;grid-template-columns:1fr 360px;gap:1rem;}
+
+.map-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1.2rem;min-height:420px;position:relative;}
+.map-area{
+  background:linear-gradient(135deg,#050c20,#040d18);
+  border-radius:10px;min-height:340px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:30px 30px;}
+.map-svg{width:100%;height:320px;max-width:550px;}
+
+.city-pin{cursor:pointer;transition:.2s;}
+.city-pin:hover .cp-circle{r:14;}
+.cp-circle{transition:.2s;}
+.cp-pulse{animation:mapPulse 2s infinite;}
+@keyframes mapPulse{0%,100%{opacity:.6;r:12}50%{opacity:.2;r:20}}
+.cp-label{font-size:9px;font-weight:700;fill:var(--text);}
+
+.map-legend{
+  position:absolute;bottom:10px;right:10px;
+  background:rgba(4,8,26,.85);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:9px;padding:.6rem .8rem;
+  font-size:.62rem;color:var(--muted);
+}
+.ml-item{display:flex;align-items:center;gap:.4rem;margin-bottom:.2rem;}
+.ml-dot{width:8px;height:8px;border-radius:50%;}
+
+.wl-sidebar{display:flex;flex-direction:column;gap:.9rem;}
+.city-list{display:flex;flex-direction:column;gap:.55rem;max-height:340px;overflow-y:auto;}
+.city-item{
+  display:flex;align-items:center;gap:.8rem;padding:.85rem;
+  border-radius:11px;border:1px solid var(--border);background:var(--s2);
+  cursor:pointer;transition:.2s;
+}
+.city-item:hover,.city-item.sel{border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.06);}
+.ci-rank{font-family:var(--ff);font-weight:800;font-size:.82rem;color:var(--cyan);width:20px;}
+.ci-name{font-size:.82rem;font-weight:600;margin-bottom:.1rem;}
+.ci-jobs{font-size:.65rem;color:var(--muted);}
+.ci-badge{margin-left:auto;padding:3px 8px;border-radius:100px;font-size:.58rem;font-weight:700;}
+
+.remote-toggle{
+  background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:1rem 1.2rem;
+}
+.rt-title{font-size:.78rem;font-weight:700;margin-bottom:.7rem;}
+.rt-opt{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.65rem .8rem;border-radius:9px;background:var(--s2);
+  margin-bottom:.4rem;cursor:pointer;transition:.2s;border:1px solid transparent;
+}
+.rt-opt:hover,.rt-opt.on{border-color:rgba(0,212,255,.2);background:rgba(0,212,255,.07);}
+.rt-opt-name{font-size:.78rem;font-weight:600;}
+.rt-opt-count{font-size:.65rem;color:var(--muted);}
+.rt-switch{
+  width:32px;height:18px;border-radius:9px;
+  background:var(--s3);border:1px solid var(--border);
+  position:relative;transition:.2s;cursor:pointer;
+}
+.rt-switch.on{background:rgba(0,212,255,.3);border-color:var(--cyan);}
+.rt-switch-knob{
+  position:absolute;top:2px;left:2px;
+  width:12px;height:12px;border-radius:50%;background:var(--muted);transition:.2s;
+}
+.rt-switch.on .rt-switch-knob{left:16px;background:var(--cyan);}
+
+/* ══════════════ TOAST ══════════════ */
+.toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:900;
+  background:var(--s2);border-radius:11px;padding:.75rem 1.1rem;
+  display:flex;align-items:center;gap:.6rem;
+  border:1px solid rgba(0,212,255,.2);
+  transform:translateY(70px);opacity:0;transition:.3s;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);max-width:280px;
+}
+.toast.on{transform:translateY(0);opacity:1;}
+.toast-ico{font-size:1rem;}
+.toast-msg{font-size:.78rem;font-weight:500;}
+
+/* ══════════════ MODAL ══════════════ */
+.modal-ov{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.82);backdrop-filter:blur(10px);
+  align-items:center;justify-content:center;padding:1rem;
+}
+.modal-ov.open{display:flex;}
+.modal-box{
+  background:var(--s1);border:1px solid rgba(0,212,255,.2);
+  border-radius:20px;width:100%;max-width:560px;
+  max-height:88vh;overflow-y:auto;position:relative;
+}
+.modal-close{
+  position:absolute;top:13px;right:13px;
+  background:var(--s2);border:1px solid var(--border);
+  color:var(--muted);width:28px;height:28px;border-radius:7px;
+  font-size:.8rem;cursor:pointer;transition:.2s;
+  display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{color:var(--red);border-color:var(--red);}
+.modal-body{padding:1.6rem;}
+
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%);}
+  #sidebar.open{transform:translateX(0);}
+  #main{margin-left:0;}
+  .d-grid4,.an-kpis{grid-template-columns:repeat(2,1fr);}
+  .jm-layout,.sg-layout,.pt-layout,.an-charts,.wl-layout,.d-row{grid-template-columns:1fr;}
+  .reco-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-name">EduMeetJob</div>
+    <div class="sb-logo-tag">DIGDAYA × Hackathon 2025</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-sec">Platform</div>
+    <div class="sb-item active" onclick="nav('dashboard',this)"><span class="sb-ico">🏠</span>Dashboard</div>
+    <div class="sb-item" onclick="nav('matching',this)"><span class="sb-ico">🤖</span>AI Job Matching <span class="sb-new">AI</span></div>
+    <div class="sb-item" onclick="nav('skillgap',this)"><span class="sb-ico">📉</span>Skill Gap Advisor</div>
+    <div class="sb-item" onclick="nav('training',this)"><span class="sb-ico">📚</span>Personalized Training</div>
+    <div class="sb-item" onclick="nav('analitik',this)"><span class="sb-ico">📊</span>Analitik Karier</div>
+    <div class="sb-item" onclick="nav('wilayah',this)"><span class="sb-ico">🗺️</span>Job Antarwilayah</div>
+    <div class="sb-sec">Akun</div>
+    <div class="sb-item"><span class="sb-ico">👤</span>Profil Saya</div>
+    <div class="sb-item"><span class="sb-ico">📄</span>CV Builder</div>
+    <div class="sb-item"><span class="sb-ico">⚙️</span>Pengaturan</div>
+  </nav>
+  <div class="sb-foot">
+    <div class="sb-profile">
+      <div class="sb-av">A</div>
+      <div><div class="sb-un">Andi Pratama</div><div class="sb-ur">Frontend Developer</div></div>
+    </div>
+    <div class="sb-xp">
+      <span>XP Profil</span>
+      <span class="sb-xp-val">72% Lengkap</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<div id="main">
+  <div class="topbar">
+    <div class="tb-title" id="ptitle">Dashboard</div>
+    <div class="tb-right">
+      <div class="tb-notif">🔔<div class="notif-dot"></div></div>
+      <div class="tb-chip">Track: Lapangan Kerja</div>
+    </div>
+  </div>
+
+  <!-- ──── DASHBOARD ──── -->
+  <div class="page active" id="p-dashboard">
+    <div class="d-hero">
+      <div style="position:relative;z-index:1">
+        <h2>Hai, Andi! 👋 Siap berkarier?</h2>
+        <p>AI kami menemukan <strong style="color:var(--cyan)">23 lowongan baru</strong> yang cocok dengan profilmu hari ini. Yuk cek sekarang!</p>
+        <div class="d-hero-actions">
+          <button class="btn-primary" onclick="nav('matching',document.querySelectorAll('.sb-item')[1])">🤖 Lihat Rekomendasi AI</button>
+          <button class="btn-outline" onclick="nav('skillgap',document.querySelectorAll('.sb-item')[2])">📉 Cek Skill Gap</button>
+        </div>
+      </div>
+      <div class="d-score-box">
+        <div class="dsb-val">87%</div>
+        <div class="dsb-lbl">Match Score</div>
+        <div style="font-size:.58rem;color:var(--green);margin-top:3px">▲ Naik dari 79%</div>
+      </div>
+    </div>
+
+    <div class="d-grid4">
+      <div class="kpi"><div class="kpi-ico">💼</div><div class="kpi-val">23</div><div class="kpi-lbl">Lowongan Cocok</div><div class="kpi-delta">▲ 8 baru hari ini</div></div>
+      <div class="kpi"><div class="kpi-ico">📨</div><div class="kpi-val">5</div><div class="kpi-lbl">Lamaran Aktif</div><div class="kpi-delta">2 menunggu respons</div></div>
+      <div class="kpi"><div class="kpi-ico">📚</div><div class="kpi-val">3</div><div class="kpi-lbl">Kursus Berjalan</div><div class="kpi-delta">68% rata-rata selesai</div></div>
+      <div class="kpi"><div class="kpi-ico">🏅</div><div class="kpi-val">7</div><div class="kpi-lbl">Sertifikat Diraih</div><div class="kpi-delta">▲ 2 bulan ini</div></div>
+    </div>
+
+    <div class="d-row">
+      <div class="card card-p">
+        <div class="panel-title">Aktivitas Terkini <span class="panel-link" onclick="nav('matching',document.querySelectorAll('.sb-item')[1])">Lihat semua →</span></div>
+        <div class="act-list">
+          <div class="act"><div class="act-ic" style="background:rgba(0,212,255,.15)">🤖</div><div><div class="act-t">AI menemukan 23 lowongan baru untukmu</div><div class="act-s">Gojek, Tokopedia, Bank Mandiri...</div></div><div class="act-ts">5m</div></div>
+          <div class="act"><div class="act-ic" style="background:rgba(45,204,122,.15)">✅</div><div><div class="act-t">Lamaran ke Gojek — Frontend Engineer</div><div class="act-s">Status: Interview Tahap 2</div></div><div class="act-ts">1j</div></div>
+          <div class="act"><div class="act-ic" style="background:rgba(123,95,255,.15)">📚</div><div><div class="act-t">Kursus React Native — Bab 6 selesai</div><div class="act-s">Progress: 72% · Estimasi 3 hari lagi</div></div><div class="act-ts">3j</div></div>
+          <div class="act"><div class="act-ic" style="background:rgba(255,208,96,.15)">🏅</div><div><div class="act-t">Sertifikat AWS Cloud Practitioner diraih</div><div class="act-s">+15% peluang untuk role DevOps</div></div><div class="act-ts">1h</div></div>
+        </div>
+      </div>
+      <div class="card card-p">
+        <div class="panel-title">Aksi Cepat</div>
+        <div class="qa-grid">
+          <div class="qa" onclick="nav('matching',document.querySelectorAll('.sb-item')[1])"><div class="qa-ic">🤖</div><div class="qa-lb">AI Matching</div></div>
+          <div class="qa" onclick="nav('skillgap',document.querySelectorAll('.sb-item')[2])"><div class="qa-ic">📉</div><div class="qa-lb">Skill Gap</div></div>
+          <div class="qa" onclick="nav('training',document.querySelectorAll('.sb-item')[3])"><div class="qa-ic">📚</div><div class="qa-lb">Training</div></div>
+          <div class="qa" onclick="nav('wilayah',document.querySelectorAll('.sb-item')[5])"><div class="qa-ic">🗺️</div><div class="qa-lb">Wilayah</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──── AI JOB MATCHING ──── -->
+  <div class="page" id="p-matching">
+    <div class="ph"><h2>🤖 AI Job Matching</h2><p>AI menganalisis 2.847 lowongan dan menemukan yang paling cocok dengan profil & skill-mu.</p></div>
+    <div class="jm-layout">
+      <div class="jm-filter">
+        <div class="jm-filter-title">🔧 Filter Pencarian</div>
+        <div class="fg"><label class="label">Kata Kunci</label><input class="input" id="jmSearch" placeholder="Frontend, React, UI/UX..." oninput="filterJobs()"></div>
+        <div class="fg"><label class="label">Lokasi</label>
+          <select class="select" id="jmLoc" onchange="filterJobs()">
+            <option value="">Semua Lokasi</option>
+            <option>Jakarta</option><option>Bandung</option><option>Surabaya</option>
+            <option>Yogyakarta</option><option>Remote</option>
+          </select>
+        </div>
+        <div class="fg"><label class="label">Tipe Pekerjaan</label>
+          <select class="select" id="jmType" onchange="filterJobs()">
+            <option value="">Semua Tipe</option>
+            <option>Full-time</option><option>Part-time</option><option>Remote</option><option>Hybrid</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label class="label">Skill yang Kamu Punya</label>
+          <div class="skill-tags">
+            <span class="skill-chip on">React</span><span class="skill-chip on">JavaScript</span>
+            <span class="skill-chip on">TypeScript</span><span class="skill-chip">Node.js</span>
+            <span class="skill-chip">Python</span><span class="skill-chip">Figma</span>
+            <span class="skill-chip">AWS</span><span class="skill-chip">Docker</span>
+          </div>
+        </div>
+        <div class="fg"><label class="label">Min. Match Score</label>
+          <input type="range" class="slider" id="jmScore" min="50" max="100" value="70" oninput="document.getElementById('jmScoreVal').textContent=this.value+'%';filterJobs()" style="width:100%;accent-color:var(--cyan)">
+          <div style="text-align:right;font-size:.68rem;color:var(--cyan);font-weight:700" id="jmScoreVal">70%</div>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center" onclick="filterJobs()">🔍 Cari Lowongan</button>
+      </div>
+      <div class="jm-results" id="jmResults"></div>
+    </div>
+  </div>
+
+  <!-- ──── SKILL GAP ──── -->
+  <div class="page" id="p-skillgap">
+    <div class="ph"><h2>📉 Skill Gap Advisor</h2><p>AI membandingkan skill-mu vs requirement industri dan memberikan rekomendasi peningkatan yang spesifik.</p></div>
+
+    <div style="margin-bottom:1rem;display:flex;gap:.7rem;align-items:center;flex-wrap:wrap">
+      <span style="font-size:.78rem;color:var(--muted);">Target Role:</span>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap" id="roleFilter">
+        <button class="tb-chip" style="cursor:pointer;border:none;background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;padding:6px 14px;border-radius:100px;font-size:.68rem;font-weight:700" onclick="setRole('Frontend Engineer',this)">Frontend Engineer ✓</button>
+        <button onclick="setRole('Full-Stack Developer',this)" style="cursor:pointer;padding:6px 14px;border-radius:100px;font-size:.68rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted)">Full-Stack Dev</button>
+        <button onclick="setRole('UI/UX Designer',this)" style="cursor:pointer;padding:6px 14px;border-radius:100px;font-size:.68rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted)">UI/UX Designer</button>
+        <button onclick="setRole('Data Analyst',this)" style="cursor:pointer;padding:6px 14px;border-radius:100px;font-size:.68rem;font-weight:700;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted)">Data Analyst</button>
+      </div>
+    </div>
+
+    <div class="sg-layout">
+      <div class="sg-radar">
+        <div style="font-family:var(--ff);font-weight:700;font-size:.88rem;margin-bottom:.8rem;text-align:center">Radar Skill — <span id="sgRoleTitle">Frontend Engineer</span></div>
+        <svg class="radar-svg" viewBox="0 0 240 240" id="radarSvg"></svg>
+        <div style="display:flex;gap:1rem;margin-top:.8rem;font-size:.65rem">
+          <span style="display:flex;align-items:center;gap:.3rem"><span style="width:10px;height:3px;background:var(--cyan);display:inline-block;border-radius:2px"></span>Skill-mu</span>
+          <span style="display:flex;align-items:center;gap:.3rem"><span style="width:10px;height:3px;background:rgba(123,95,255,.5);display:inline-block;border-radius:2px"></span>Requirement</span>
+        </div>
+      </div>
+
+      <div class="sg-list">
+        <div style="font-family:var(--ff);font-weight:700;font-size:.88rem;margin-bottom:.9rem">Detail Gap per Skill</div>
+        <div id="sgSkillList"></div>
+      </div>
+    </div>
+
+    <div class="sg-reco">
+      <div class="sg-reco-title">🎯 Rekomendasi Peningkatan Skill</div>
+      <div class="reco-grid" id="sgRecoGrid"></div>
+    </div>
+  </div>
+
+  <!-- ──── PERSONALIZED TRAINING ──── -->
+  <div class="page" id="p-training">
+    <div class="ph"><h2>📚 Personalized Training Path</h2><p>Jalur belajar yang disesuaikan dengan skill gap dan target karier-mu. AI memilihkan kursus terbaik untukmu.</p></div>
+    <div class="pt-layout">
+      <div class="pt-path">
+        <div class="pt-path-title">
+          🗺️ Learning Path — Frontend Engineer
+          <span class="tag tag-cyan">12 minggu</span>
+        </div>
+        <div class="path-track" id="pathTrack"></div>
+      </div>
+      <div class="pt-sidebar">
+        <div class="pt-stats">
+          <div style="font-family:var(--ff);font-weight:700;font-size:.88rem">📈 Statistik Belajar</div>
+          <div class="pt-stat-grid">
+            <div class="pt-stat"><div class="pt-stat-val">68%</div><div class="pt-stat-lbl">Selesai</div></div>
+            <div class="pt-stat"><div class="pt-stat-val">24j</div><div class="pt-stat-lbl">Waktu Belajar</div></div>
+            <div class="pt-stat"><div class="pt-stat-val">7</div><div class="pt-stat-lbl">Sertifikat</div></div>
+            <div class="pt-stat"><div class="pt-stat-val">92%</div><div class="pt-stat-lbl">Nilai Rata²</div></div>
+          </div>
+          <div class="progress-wrap" style="margin-top:.8rem">
+            <div class="progress-info"><span>Progress Keseluruhan</span><span style="color:var(--cyan)">68%</span></div>
+            <div class="progress-bar"><div class="progress-fill fill-cyan" style="width:68%"></div></div>
+          </div>
+        </div>
+        <div class="card card-p">
+          <div style="font-family:var(--ff);font-weight:700;font-size:.85rem;margin-bottom:.7rem">🏅 Sertifikat Diraih</div>
+          <div class="cert-list" id="certList"></div>
+        </div>
+        <div class="card card-p">
+          <div style="font-family:var(--ff);font-weight:700;font-size:.85rem;margin-bottom:.7rem">⚡ Mulai Belajar Hari Ini</div>
+          <button class="btn-primary" style="width:100%;justify-content:center" onclick="toast('▶️ Membuka kursus React Native...','📚')">▶ Lanjut React Native — Bab 7</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──── ANALITIK ──── -->
+  <div class="page" id="p-analitik">
+    <div class="ph"><h2>📊 Analitik Kesesuaian Karier</h2><p>Data real-time tentang tren lowongan, permintaan skill, dan posisi kompetitifmu di pasar kerja digital.</p></div>
+
+    <div class="an-kpis">
+      <div class="kpi"><div class="kpi-ico">📈</div><div class="kpi-val">+34%</div><div class="kpi-lbl">Permintaan Frontend Dev</div><div class="kpi-delta">▲ YoY 2025</div></div>
+      <div class="kpi"><div class="kpi-ico">💰</div><div class="kpi-val">Rp18M</div><div class="kpi-lbl">Gaji Median Role Target</div><div class="kpi-delta">▲ 12% vs tahun lalu</div></div>
+      <div class="kpi"><div class="kpi-ico">🏆</div><div class="kpi-val">Top 15%</div><div class="kpi-lbl">Posisimu vs Kandidat Lain</div><div class="kpi-delta">▲ Naik dari Top 25%</div></div>
+      <div class="kpi"><div class="kpi-ico">⏱️</div><div class="kpi-val">12 hari</div><div class="kpi-lbl">Avg. Waktu Dapat Kerja</div><div class="kpi-delta">Match score ≥ 85%</div></div>
+    </div>
+
+    <div class="an-charts">
+      <div class="chart-card">
+        <div class="chart-title">Permintaan Skill Frontend</div>
+        <div class="chart-sub">Top skills — lowongan per bulan</div>
+        <div class="bar-chart" id="anBarChart"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Distribusi Gaji</div>
+        <div class="chart-sub">Frontend Developer 2025</div>
+        <div class="donut-wr">
+          <svg class="donut-svg" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#0d1535" stroke-width="15"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#00d4ff" stroke-width="15" stroke-dasharray="57 132" stroke-dashoffset="22" transform="rotate(-90 50 50)"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#7b5fff" stroke-width="15" stroke-dasharray="38 151" stroke-dashoffset="-35" transform="rotate(-90 50 50)"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#2dcc7a" stroke-width="15" stroke-dasharray="28 161" stroke-dashoffset="-73" transform="rotate(-90 50 50)"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#ff5fa0" stroke-width="15" stroke-dasharray="15 174" stroke-dashoffset="-101" transform="rotate(-90 50 50)"/>
+          </svg>
+          <div class="dl-list">
+            <div class="dl"><div class="dl-dot" style="background:var(--cyan)"></div>>Rp20M 40%</div>
+            <div class="dl"><div class="dl-dot" style="background:var(--violet)"></div>Rp15-20M 27%</div>
+            <div class="dl"><div class="dl-dot" style="background:var(--green)"></div>Rp10-15M 20%</div>
+            <div class="dl"><div class="dl-dot" style="background:var(--pink)"></div><Rp10M 13%</div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Match Score Trend</div>
+        <div class="chart-sub">6 bulan terakhir</div>
+        <div style="position:relative;height:90px">
+          <svg style="width:100%;height:90px" viewBox="0 0 200 80" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#00d4ff" stop-opacity=".25"/>
+                <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,65 L33,58 L66,50 L100,42 L133,32 L166,22 L200,14" fill="none" stroke="#00d4ff" stroke-width="2"/>
+            <path d="M0,65 L33,58 L66,50 L100,42 L133,32 L166,22 L200,14 L200,80 L0,80Z" fill="url(#lg2)"/>
+            <circle cx="200" cy="14" r="4" fill="#00d4ff"/>
+          </svg>
+        </div>
+        <div class="lc-lbl"><span>Okt</span><span>Nov</span><span>Des</span><span>Jan</span><span>Feb</span><span>Mar</span></div>
+      </div>
+    </div>
+
+    <div class="an-table">
+      <div class="tbl-head">
+        <div class="tbl-title">Tren Lowongan per Industri</div>
+        <input class="tbl-search" placeholder="🔍 Cari industri..." oninput="filterAnTbl(this.value)">
+      </div>
+      <table><thead><tr><th>Industri</th><th>Total Lowongan</th><th>Pertumbuhan</th><th>Avg Gaji</th><th>Tren</th><th>Kompetisi</th></tr></thead>
+      <tbody id="anTbody"></tbody></table>
+    </div>
+  </div>
+
+  <!-- ──── WILAYAH ──── -->
+  <div class="page" id="p-wilayah">
+    <div class="ph"><h2>🗺️ Job Matching Antarwilayah</h2><p>Temukan peluang kerja dari seluruh Indonesia. AI mencocokkan skill-mu dengan lowongan di berbagai kota — termasuk remote!</p></div>
+    <div class="wl-layout">
+      <div class="map-card">
+        <div style="font-family:var(--ff);font-weight:700;font-size:.88rem;margin-bottom:.8rem;display:flex;align-items:center;justify-content:space-between">
+          Peta Peluang Kerja Digital
+          <span class="tag tag-cyan" id="mapTotal">847 Lowongan</span>
+        </div>
+        <div class="map-area">
+          <div class="map-grid"></div>
+          <svg class="map-svg" viewBox="0 0 560 220" id="mapSvg">
+            <!-- Indonesia simplified map outline -->
+            <g fill="rgba(0,212,255,.04)" stroke="rgba(0,212,255,.12)" stroke-width=".5">
+              <!-- Sumatra -->
+              <ellipse cx="130" cy="110" rx="90" ry="35" transform="rotate(-25 130 110)"/>
+              <!-- Jawa -->
+              <ellipse cx="290" cy="155" rx="95" ry="22" transform="rotate(-5 290 155)"/>
+              <!-- Kalimantan -->
+              <ellipse cx="320" cy="90" rx="70" ry="55"/>
+              <!-- Sulawesi -->
+              <path d="M410,65 L425,85 L420,105 L435,115 L450,100 L455,80 L440,65 Z"/>
+              <!-- Papua -->
+              <ellipse cx="500" cy="110" rx="55" ry="40"/>
+              <!-- Bali-NTB -->
+              <ellipse cx="385" cy="165" rx="20" ry="10"/>
+            </g>
+            <!-- City pins -->
+            <g id="cityPins"></g>
+          </svg>
+          <div class="map-legend">
+            <div class="ml-item"><div class="ml-dot" style="background:var(--cyan)"></div>100+ lowongan</div>
+            <div class="ml-item"><div class="ml-dot" style="background:var(--violet)"></div>50-99 lowongan</div>
+            <div class="ml-item"><div class="ml-dot" style="background:var(--muted)"></div><50 lowongan</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wl-sidebar">
+        <div class="card card-p" style="padding-bottom:.8rem">
+          <div style="font-family:var(--ff);font-weight:700;font-size:.85rem;margin-bottom:.7rem">🏙️ Top Kota — Lowongan Cocok</div>
+          <div class="city-list" id="cityList"></div>
+        </div>
+        <div class="remote-toggle">
+          <div class="rt-title">⚡ Filter Tipe Kerja</div>
+          <div class="rt-opt on" onclick="toggleRemote(this)">
+            <div><div class="rt-opt-name">🌐 Remote</div><div class="rt-opt-count">312 lowongan</div></div>
+            <div class="rt-switch on" id="sw-remote"><div class="rt-switch-knob"></div></div>
+          </div>
+          <div class="rt-opt on" onclick="toggleRemote(this)">
+            <div><div class="rt-opt-name">🏢 Hybrid</div><div class="rt-opt-count">218 lowongan</div></div>
+            <div class="rt-switch on" id="sw-hybrid"><div class="rt-switch-knob"></div></div>
+          </div>
+          <div class="rt-opt" onclick="toggleRemote(this)">
+            <div><div class="rt-opt-name">🏠 WFH Full</div><div class="rt-opt-count">125 lowongan</div></div>
+            <div class="rt-switch" id="sw-wfh"><div class="rt-switch-knob"></div></div>
+          </div>
+          <div class="rt-opt" onclick="toggleRemote(this)">
+            <div><div class="rt-opt-name">🚀 Relokasi Difasilitasi</div><div class="rt-opt-count">84 lowongan</div></div>
+            <div class="rt-switch" id="sw-relo"><div class="rt-switch-knob"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOB DETAIL MODAL -->
+<div class="modal-ov" id="jobModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-body" id="jobModalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-ico" id="tico">✅</span>
+  <span class="toast-msg" id="tmsg">Berhasil!</span>
+</div>
+
+<script>
+// ══════════════════════════════
+// NAVIGATION
+// ══════════════════════════════
+const titles={dashboard:'Dashboard',matching:'🤖 AI Job Matching',skillgap:'📉 Skill Gap Advisor',training:'📚 Personalized Training',analitik:'📊 Analitik Karier',wilayah:'🗺️ Job Antarwilayah'}
+function nav(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'))
+  document.getElementById('p-'+id).classList.add('active')
+  if(el) el.classList.add('active')
+  document.getElementById('ptitle').textContent=titles[id]
+}
+
+// ══════════════════════════════
+// TOAST
+// ══════════════════════════════
+let tTimer
+function toast(msg,ico='✅'){
+  clearTimeout(tTimer)
+  document.getElementById('tmsg').textContent=msg
+  document.getElementById('tico').textContent=ico
+  const t=document.getElementById('toast')
+  t.classList.add('on')
+  tTimer=setTimeout(()=>t.classList.remove('on'),3000)
+}
+function closeModal(){document.getElementById('jobModal').classList.remove('open')}
+
+// ══════════════════════════════
+// AI JOB MATCHING
+// ══════════════════════════════
+const jobs=[
+  {id:1,logo:'🦅',title:'Frontend Engineer',company:'Gojek',loc:'Jakarta',type:'Hybrid',salary:'Rp18-25M',match:94,tags:['React','TypeScript','Node.js'],desc:'Bergabung dengan tim engineering Gojek untuk membangun fitur-fitur super app yang digunakan jutaan pengguna di Asia Tenggara.',featured:true,insight:'Skill React & TypeScript kamu sangat sesuai. Tambahkan pengalaman dengan GraphQL untuk meningkatkan peluang.'},
+  {id:2,logo:'🛍️',title:'React Developer',company:'Tokopedia',loc:'Jakarta',type:'Remote',salary:'Rp15-22M',match:88,tags:['React','Redux','CSS'],desc:'Kembangkan fitur frontend Tokopedia yang melayani 100 juta pengguna aktif bulanan dengan fokus pada performa dan UX.',featured:false,insight:'Profil kamu cocok 88%. Tingkatkan pengalaman dengan Next.js untuk match score 95%+.'},
+  {id:3,logo:'🏦',title:'UI/UX + Frontend',company:'Bank Mandiri',loc:'Jakarta',type:'Full-time',salary:'Rp12-18M',match:82,tags:['React','Figma','UI/UX'],desc:'Posisi hybrid UI/UX dan Frontend di tim digital banking Mandiri. Bantu transformasi pengalaman layanan keuangan digital.',featured:false,insight:'Background hybrid design+code kamu sangat dicari di perbankan digital.'},
+  {id:4,logo:'🚀',title:'Senior Frontend Dev',company:'Bukalapak',loc:'Bandung',type:'Hybrid',salary:'Rp20-30M',match:79,tags:['Vue.js','React','Webpack'],desc:'Senior Frontend Developer untuk memimpin tim 5 engineer dalam membangun platform commerce next-gen Bukalapak.',featured:false,insight:'Pengalaman 2+ tahun kamu cukup. Pelajari Vue.js untuk membuka peluang ini sepenuhnya.'},
+  {id:5,logo:'💳',title:'Frontend Engineer',company:'OVO',loc:'Jakarta',type:'Full-time',salary:'Rp14-20M',match:91,tags:['React Native','TypeScript','API'],desc:'Bangun aplikasi mobile OVO yang digunakan 100M+ pengguna. Fokus pada React Native dan optimasi performa aplikasi.',featured:true,insight:'React Native adalah skill yang sedang kamu pelajari! Selesaikan kursus untuk unlock posisi ini penuh.'},
+  {id:6,logo:'📦',title:'Frontend Developer',company:'Shopee',loc:'Remote',type:'Remote',salary:'Rp13-19M',match:85,tags:['React','Jest','CI/CD'],desc:'Remote position untuk membangun fitur-fitur Shopee dengan standar kualitas kode tinggi menggunakan testing dan CI/CD.',featured:false,insight:'Testing experience kamu perlu ditingkatkan. Match akan naik ke 92% setelah kursus Jest selesai.'},
+]
+
+let filteredJobs=[...jobs]
+
+function buildJobCards(data){
+  document.getElementById('jmResults').innerHTML=data.map(j=>`
+    <div class="job-card${j.featured?' featured':''}" onclick="openJob(${j.id})">
+      <div class="jc-top">
+        <div class="jc-logo">${j.logo}</div>
+        <div style="flex:1">
+          <div class="jc-title">${j.title}</div>
+          <div class="jc-company">${j.company} · ${j.loc}</div>
+        </div>
+        <div class="jc-match">
+          <div class="jc-match-pct">${j.match}%</div>
+          <div class="jc-match-lbl">Match</div>
+        </div>
+      </div>
+      <div class="jc-tags">
+        ${j.tags.map(t=>`<span class="tag tag-violet">${t}</span>`).join('')}
+        <span class="tag ${j.type==='Remote'?'tag-green':j.type==='Hybrid'?'tag-cyan':'tag-gold'}">${j.type}</span>
+      </div>
+      <div class="jc-bottom">
+        <div class="jc-meta">
+          <span>💰 ${j.salary}</span>
+          <span>📍 ${j.loc}</span>
+        </div>
+        <button class="jc-apply" onclick="event.stopPropagation();applyJob('${j.title}','${j.company}')">Lamar</button>
+      </div>
+      <div class="ai-insight"><div class="ai-dot"></div>${j.insight}</div>
+    </div>`).join('')
+}
+
+function filterJobs(){
+  const q=document.getElementById('jmSearch').value.toLowerCase()
+  const loc=document.getElementById('jmLoc').value
+  const type=document.getElementById('jmType').value
+  const minScore=parseInt(document.getElementById('jmScore').value)
+  filteredJobs=jobs.filter(j=>{
+    const matchQ=!q||j.title.toLowerCase().includes(q)||j.company.toLowerCase().includes(q)||j.tags.some(t=>t.toLowerCase().includes(q))
+    const matchLoc=!loc||j.loc===loc||(loc==='Remote'&&j.type==='Remote')
+    const matchType=!type||j.type===type
+    const matchScore=j.match>=minScore
+    return matchQ&&matchLoc&&matchType&&matchScore
+  })
+  buildJobCards(filteredJobs)
+  toast(`🔍 ${filteredJobs.length} lowongan ditemukan`,'🤖')
+}
+
+function openJob(id){
+  const j=jobs.find(x=>x.id===id)
+  document.getElementById('jobModalBody').innerHTML=`
+    <div style="display:flex;align-items:flex-start;gap:1rem;margin-bottom:1.2rem">
+      <div style="width:54px;height:54px;border-radius:14px;background:var(--s2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0">${j.logo}</div>
+      <div style="flex:1">
+        <div style="font-family:var(--ff);font-weight:800;font-size:1.2rem;margin-bottom:.2rem">${j.title}</div>
+        <div style="color:var(--muted);font-size:.8rem">${j.company} · ${j.loc} · ${j.type}</div>
+      </div>
+      <div style="text-align:center;background:rgba(0,212,255,.08);border:2px solid var(--cyan);border-radius:50%;width:56px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div style="font-family:var(--ff);font-weight:800;font-size:1rem;color:var(--cyan)">${j.match}%</div>
+        <div style="font-size:.42rem;color:var(--muted)">MATCH</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem">
+      ${j.tags.map(t=>`<span class="tag tag-violet">${t}</span>`).join('')}
+      <span class="tag tag-gold">${j.salary}</span>
+    </div>
+    <div style="color:var(--muted);font-size:.83rem;line-height:1.7;margin-bottom:1rem">${j.desc}</div>
+    <div class="ai-insight" style="margin-bottom:1.2rem"><div class="ai-dot"></div><span style="color:var(--cyan);font-weight:700">AI Insight:</span> ${j.insight}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+      <button class="btn-primary" style="justify-content:center" onclick="applyJob('${j.title}','${j.company}');closeModal()">✅ Lamar Sekarang</button>
+      <button class="btn-outline" onclick="closeModal()">Simpan Lowongan</button>
+    </div>`
+  document.getElementById('jobModal').classList.add('open')
+}
+
+function applyJob(title,company){
+  toast(`📨 Lamaran ke ${company} dikirim!`,'✅')
+  closeModal()
+}
+
+buildJobCards(jobs)
+
+// ══════════════════════════════
+// SKILL GAP
+// ══════════════════════════════
+const roleSkills={
+  'Frontend Engineer':[
+    {name:'React/Vue',mine:85,req:90,gap:5,color:var_('cyan')},
+    {name:'TypeScript',mine:70,req:85,gap:15,color:var_('violet')},
+    {name:'CSS/Tailwind',mine:80,req:80,gap:0,color:var_('green')},
+    {name:'Testing',mine:45,req:75,gap:30,color:var_('pink')},
+    {name:'Node.js',mine:60,req:70,gap:10,color:var_('gold')},
+    {name:'React Native',mine:30,req:65,gap:35,color:var_('blue')},
+  ],
+  'Full-Stack Developer':[
+    {name:'React',mine:85,req:85,gap:0,color:var_('cyan')},
+    {name:'Node.js',mine:60,req:90,gap:30,color:var_('violet')},
+    {name:'Databases',mine:50,req:80,gap:30,color:var_('pink')},
+    {name:'APIs',mine:70,req:85,gap:15,color:var_('green')},
+    {name:'DevOps',mine:25,req:70,gap:45,color:var_('gold')},
+    {name:'Security',mine:30,req:75,gap:45,color:var_('blue')},
+  ],
+  'UI/UX Designer':[
+    {name:'Figma',mine:40,req:95,gap:55,color:var_('cyan')},
+    {name:'Research',mine:50,req:85,gap:35,color:var_('violet')},
+    {name:'Prototyping',mine:35,req:90,gap:55,color:var_('pink')},
+    {name:'CSS',mine:80,req:60,gap:0,color:var_('green')},
+    {name:'Branding',mine:30,req:70,gap:40,color:var_('gold')},
+    {name:'Animation',mine:25,req:65,gap:40,color:var_('blue')},
+  ],
+  'Data Analyst':[
+    {name:'Python',mine:55,req:90,gap:35,color:var_('cyan')},
+    {name:'SQL',mine:60,req:85,gap:25,color:var_('violet')},
+    {name:'Tableau',mine:30,req:75,gap:45,color:var_('pink')},
+    {name:'Statistics',mine:40,req:80,gap:40,color:var_('green')},
+    {name:'Excel',mine:75,req:70,gap:0,color:var_('gold')},
+    {name:'ML Basics',mine:20,req:60,gap:40,color:var_('blue')},
+  ],
+}
+function var_(n){return `var(--${n})`}
+
+const roleRecos={
+  'Frontend Engineer':[
+    {icon:'📱',skill:'React Native',impact:'+35% peluang',time:'6 minggu',course:'Udemy RN Bootcamp'},
+    {icon:'🧪',skill:'Testing (Jest)',impact:'+28% peluang',time:'3 minggu',course:'Testing Library'},
+    {icon:'⚙️',skill:'TypeScript Adv.',impact:'+22% peluang',time:'4 minggu',course:'TypeScript Deep Dive'},
+    {icon:'🌐',skill:'GraphQL',impact:'+18% peluang',time:'2 minggu',course:'Apollo GraphQL'},
+    {icon:'🐳',skill:'Docker Basics',impact:'+15% peluang',time:'2 minggu',course:'Docker for Dev'},
+    {icon:'🔐',skill:'Web Security',impact:'+12% peluang',time:'3 minggu',course:'OWASP Fundamentals'},
+  ],
+  'Full-Stack Developer':[
+    {icon:'🛢️',skill:'PostgreSQL',impact:'+45% peluang',time:'4 minggu',course:'DB Mastery'},
+    {icon:'☁️',skill:'AWS/Cloud',impact:'+40% peluang',time:'8 minggu',course:'AWS Certified'},
+    {icon:'🐳',skill:'Docker/K8s',impact:'+35% peluang',time:'6 minggu',course:'DevOps Bootcamp'},
+    {icon:'🔌',skill:'GraphQL',impact:'+22% peluang',time:'2 minggu',course:'Apollo GraphQL'},
+    {icon:'🔐',skill:'Auth & Security',impact:'+20% peluang',time:'3 minggu',course:'JWT & OAuth'},
+    {icon:'📦',skill:'Redis Cache',impact:'+15% peluang',time:'2 minggu',course:'Redis Mastery'},
+  ],
+  'UI/UX Designer':[
+    {icon:'🎨',skill:'Figma Adv.',impact:'+55% peluang',time:'4 minggu',course:'Figma Masterclass'},
+    {icon:'👥',skill:'User Research',impact:'+40% peluang',time:'5 minggu',course:'UX Research Pro'},
+    {icon:'✨',skill:'Prototyping',impact:'+38% peluang',time:'3 minggu',course:'Interactive Proto'},
+    {icon:'🎬',skill:'Motion Design',impact:'+28% peluang',time:'4 minggu',course:'After Effects'},
+    {icon:'📐',skill:'Design System',impact:'+25% peluang',time:'3 minggu',course:'Design Tokens'},
+    {icon:'🧠',skill:'Psikologi UX',impact:'+20% peluang',time:'2 minggu',course:'UX Psychology'},
+  ],
+  'Data Analyst':[
+    {icon:'🐍',skill:'Python Adv.',impact:'+50% peluang',time:'8 minggu',course:'Python Data Science'},
+    {icon:'📊',skill:'Tableau',impact:'+42% peluang',time:'4 minggu',course:'Tableau Desktop'},
+    {icon:'📈',skill:'Statistics',impact:'+38% peluang',time:'6 minggu',course:'Stats for Data'},
+    {icon:'🤖',skill:'Machine Learning',impact:'+35% peluang',time:'10 minggu',course:'ML Fundamentals'},
+    {icon:'🗄️',skill:'SQL Advanced',impact:'+25% peluang',time:'3 minggu',course:'Advanced SQL'},
+    {icon:'☁️',skill:'BigQuery/Cloud',impact:'+22% peluang',time:'4 minggu',course:'GCP Data'},
+  ],
+}
+
+let curRole='Frontend Engineer'
+function setRole(role, el){
+  curRole=role
+  document.querySelectorAll('#roleFilter button').forEach(b=>{
+    b.style.background='rgba(255,255,255,.05)'
+    b.style.border='1px solid var(--border)'
+    b.style.color='var(--muted)'
+  })
+  el.style.background='linear-gradient(135deg,var(--violet),var(--cyan))'
+  el.style.border='none'; el.style.color='#fff'
+  document.getElementById('sgRoleTitle').textContent=role
+  buildRadar(); buildSkillList(); buildRecos()
+}
+
+function buildRadar(){
+  const skills=roleSkills[curRole]
+  const cx=120,cy=120,r=95,n=skills.length
+  const angles=skills.map((_,i)=>i*2*Math.PI/n - Math.PI/2)
+  const pts=(vals)=>vals.map((v,i)=>{const d=r*v/100;return [cx+d*Math.cos(angles[i]),cy+d*Math.sin(angles[i])]})
+  const poly=pts(skills.map(s=>s.req))
+  const mine=pts(skills.map(s=>s.mine))
+  const toPath=p=>p.map((pt,i)=>(i?'L':'M')+pt[0].toFixed(1)+','+pt[1].toFixed(1)).join(' ')+'Z'
+  const gridLines=([1,2,3,4].map(l=>{
+    const pts2=skills.map((_,i)=>{const d=r*(l/4);return [cx+d*Math.cos(angles[i]),cy+d*Math.sin(angles[i])]})
+    return `<polygon points="${pts2.map(p=>p.join(',')).join(' ')}" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>`
+  })).join('')
+  const axisLines=angles.map(a=>`<line x1="${cx}" y1="${cy}" x2="${(cx+r*Math.cos(a)).toFixed(1)}" y2="${(cy+r*Math.sin(a)).toFixed(1)}" stroke="rgba(255,255,255,.07)" stroke-width="1"/>`).join('')
+  const labels=skills.map((s,i)=>{
+    const d=r+16;const x=cx+d*Math.cos(angles[i]);const y=cy+d*Math.sin(angles[i])
+    return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" fill="${s.gap===0?'#2dcc7a':'#7a8ab0'}" font-size="9" font-family="Syne" font-weight="700">${s.name}</text>`
+  }).join('')
+  document.getElementById('radarSvg').innerHTML=`
+    ${gridLines}${axisLines}
+    <path d="${toPath(poly)}" fill="rgba(123,95,255,.1)" stroke="rgba(123,95,255,.4)" stroke-width="1.5"/>
+    <path d="${toPath(mine)}" fill="rgba(0,212,255,.15)" stroke="var(--cyan)" stroke-width="2"/>
+    ${mine.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3.5" fill="var(--cyan)"/>`).join('')}
+    ${labels}`
+}
+
+function buildSkillList(){
+  const skills=roleSkills[curRole]
+  document.getElementById('sgSkillList').innerHTML=skills.map(s=>`
+    <div class="sg-item">
+      <div class="sg-item-top">
+        <span class="sg-item-name">${s.name}</span>
+        <span class="sg-item-diff" style="color:${s.gap===0?'var(--green)':s.gap<=15?'var(--gold)':'var(--pink)'}">
+          ${s.gap===0?'✓ Terpenuhi':`Gap: -${s.gap}%`}
+        </span>
+      </div>
+      <div class="sg-bars">
+        <div class="sg-bar-row"><span class="sg-bar-lbl">Kamu</span><div class="sg-bar-track"><div class="sg-bar-fill" style="width:${s.mine}%;background:var(--cyan)"></div></div><span style="font-size:.6rem;color:var(--cyan);width:28px">${s.mine}%</span></div>
+        <div class="sg-bar-row"><span class="sg-bar-lbl">Target</span><div class="sg-bar-track"><div class="sg-bar-fill" style="width:${s.req}%;background:rgba(123,95,255,.6)"></div></div><span style="font-size:.6rem;color:var(--violet);width:28px">${s.req}%</span></div>
+      </div>
+    </div>`).join('')
+}
+
+function buildRecos(){
+  const recos=roleRecos[curRole]
+  document.getElementById('sgRecoGrid').innerHTML=recos.map(r=>`
+    <div class="reco-card" onclick="toast('📚 Membuka kursus ${r.skill}...','🎓')">
+      <div class="reco-icon">${r.icon}</div>
+      <div class="reco-skill">${r.skill}</div>
+      <div class="reco-impact">${r.impact}</div>
+      <div class="reco-time">⏱ ${r.time} · ${r.course}</div>
+    </div>`).join('')
+}
+
+buildRadar(); buildSkillList(); buildRecos()
+
+// ══════════════════════════════
+// TRAINING PATH
+// ══════════════════════════════
+const courses=[
+  {title:'HTML, CSS & JavaScript Fundamentals',dur:'2 minggu',provider:'Dicoding',status:'done',tags:['HTML','CSS','JS'],prog:100},
+  {title:'React.js — Dari Dasar hingga Mahir',dur:'3 minggu',provider:'Udemy',status:'done',tags:['React','Hooks','Redux'],prog:100},
+  {title:'TypeScript untuk React Developer',dur:'2 minggu',provider:'Scrimba',status:'active',tags:['TypeScript','Generics'],prog:72},
+  {title:'React Native — Mobile App Development',dur:'3 minggu',provider:'Udemy',status:'active',tags:['React Native','Expo'],prog:40},
+  {title:'Testing dengan Jest & React Testing Library',dur:'2 minggu',provider:'Testing JS',status:'locked',tags:['Jest','RTL','TDD'],prog:0},
+  {title:'Node.js & Express — Backend Essentials',dur:'3 minggu',provider:'The Odin Project',status:'locked',tags:['Node.js','REST API'],prog:0},
+  {title:'Docker & CI/CD untuk Frontend',dur:'2 minggu',provider:'Coursera',status:'locked',tags:['Docker','GitHub Actions'],prog:0},
+]
+
+const certs=[
+  {ico:'🏅',name:'JavaScript Fundamentals',org:'Dicoding',check:true},
+  {ico:'⚛️',name:'React Developer Certified',org:'Meta',check:true},
+  {ico:'☁️',name:'AWS Cloud Practitioner',org:'Amazon',check:true},
+]
+
+function buildPathTrack(){
+  document.getElementById('pathTrack').innerHTML=courses.map((c,i)=>`
+    <div class="path-item${c.status==='done'?' done':c.status==='active'?' active-course':''}">
+      <div class="pi-top">
+        <div class="pi-title">${c.title}</div>
+        <span class="tag ${c.status==='done'?'tag-green':c.status==='active'?'tag-cyan':'tag-violet'}">${c.status==='done'?'✓ Selesai':c.status==='active'?'▶ Aktif':'🔒 Terkunci'}</span>
+      </div>
+      <div class="pi-meta">
+        <span>⏱ ${c.dur}</span>
+        <span>🎓 ${c.provider}</span>
+        <span>${c.tags.join(' · ')}</span>
+      </div>
+      ${c.status!=='locked'?`
+        <div class="progress-wrap">
+          <div class="progress-info"><span>Progress</span><span style="color:${c.status==='done'?'var(--green)':'var(--cyan)'}">${c.prog}%</span></div>
+          <div class="progress-bar"><div class="progress-fill ${c.status==='done'?'fill-green':'fill-cyan'}" style="width:${c.prog}%"></div></div>
+        </div>`:''}
+      ${c.status==='active'?`<div class="pi-actions"><button class="pi-btn primary" onclick="toast('▶️ Membuka ${c.title}...','📚')">▶ Lanjutkan</button><button class="pi-btn" onclick="toast('📌 Kursus di-bookmark','📌')">Bookmark</button></div>`:''}
+    </div>`).join('')
+  document.getElementById('certList').innerHTML=certs.map(c=>`
+    <div class="cert-item">
+      <div class="cert-ico" style="background:rgba(255,208,96,.12)">${c.ico}</div>
+      <div><div class="cert-name">${c.name}</div><div class="cert-org">${c.org}</div></div>
+      ${c.check?'<div class="cert-check">✓</div>':''}
+    </div>`).join('')
+}
+buildPathTrack()
+
+// ══════════════════════════════
+// ANALITIK
+// ══════════════════════════════
+function buildAnBar(){
+  const data=[{l:'React',v:92},{l:'TypeScript',v:78},{l:'Next.js',v:71},{l:'Vue',v:58},{l:'Node',v:65},{l:'Flutter',v:44},{l:'Angular',v:38}]
+  const max=Math.max(...data.map(d=>d.v))
+  document.getElementById('anBarChart').innerHTML=data.map(d=>`
+    <div class="bc-col">
+      <div class="bc-val">${d.v}%</div>
+      <div class="bc-bar" style="height:${Math.round(d.v/max*88)}px"></div>
+      <div class="bc-lbl">${d.l}</div>
+    </div>`).join('')
+}
+buildAnBar()
+
+const anRows=[
+  {ind:'Teknologi & Startup',total:'2.847',growth:'+34%',up:true,salary:'Rp18M',spark:[8,12,14,16,18,20],level:'Sangat Tinggi'},
+  {ind:'Perbankan Digital',total:'1.234',growth:'+28%',up:true,salary:'Rp22M',spark:[10,12,14,15,18,20],level:'Tinggi'},
+  {ind:'E-Commerce',total:'987',growth:'+21%',up:true,salary:'Rp16M',spark:[8,10,12,14,16,18],level:'Tinggi'},
+  {ind:'Fintech',total:'756',growth:'+45%',up:true,salary:'Rp20M',spark:[5,8,10,14,17,20],level:'Sangat Tinggi'},
+  {ind:'Media & Konten',total:'432',growth:'+12%',up:true,salary:'Rp12M',spark:[10,11,12,12,13,14],level:'Sedang'},
+  {ind:'Pemerintah Digital',total:'321',growth:'-4%',up:false,salary:'Rp10M',spark:[14,13,12,11,10,9],level:'Rendah'},
+  {ind:'Konsultan IT',total:'654',growth:'+18%',up:true,salary:'Rp15M',spark:[8,10,11,13,15,16],level:'Sedang'},
+]
+function renderAnTbl(data){
+  const chips={'Sangat Tinggi':'tag-cyan','Tinggi':'tag-violet','Sedang':'tag-gold','Rendah':'tag-pink'}
+  document.getElementById('anTbody').innerHTML=data.map(r=>`
+    <tr>
+      <td><strong>${r.ind}</strong></td>
+      <td>${r.total}</td>
+      <td style="color:${r.up?'var(--green)':'var(--red)'}">${r.up?'▲':'▼'} ${r.growth}</td>
+      <td><strong>${r.salary}</strong></td>
+      <td><div class="spk">${r.spark.map(h=>`<div class="sp" style="height:${h}px;background:${r.up?'var(--cyan)':'var(--red)'}"></div>`).join('')}</div></td>
+      <td><span class="tag ${chips[r.level]||'tag-gold'}">${r.level}</span></td>
+    </tr>`).join('')
+}
+renderAnTbl(anRows)
+function filterAnTbl(q){renderAnTbl(anRows.filter(r=>r.ind.toLowerCase().includes(q.toLowerCase())))}
+
+// ══════════════════════════════
+// WILAYAH / MAP
+// ══════════════════════════════
+const cities=[
+  {name:'Jakarta',jobs:412,match:94,x:255,y:158,color:'var(--cyan)',r:14},
+  {name:'Bandung',jobs:187,match:88,x:275,y:168,color:'var(--cyan)',r:11},
+  {name:'Surabaya',jobs:156,match:85,x:330,y:165,color:'var(--violet)',r:10},
+  {name:'Yogyakarta',jobs:98,match:82,x:308,y:165,color:'var(--violet)',r:9},
+  {name:'Bali',jobs:76,match:79,x:378,y:170,color:'var(--violet)',r:8},
+  {name:'Medan',jobs:65,match:74,x:155,y:88,color:'var(--muted)',r:7},
+  {name:'Makassar',jobs:54,match:71,x:420,y:130,color:'var(--muted)',r:7},
+  {name:'Remote',jobs:312,match:91,x:490,y:60,color:'var(--green)',r:13},
+]
+
+function buildMap(){
+  document.getElementById('cityPins').innerHTML=cities.map((c,i)=>`
+    <g class="city-pin" onclick="selectCity(${i})" transform="translate(${c.x},${c.y})">
+      <circle class="cp-pulse" r="${c.r+4}" fill="${c.color}" opacity=".15"/>
+      <circle class="cp-circle" r="${c.r}" fill="${c.color}" opacity=".8" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+      <text y="4" text-anchor="middle" fill="rgba(0,0,0,.9)" font-size="8" font-weight="800" font-family="Syne">${c.jobs}</text>
+      <text y="${c.r+11}" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="7.5" font-family="Syne" font-weight="600">${c.name}</text>
+    </g>`).join('')
+}
+
+function buildCityList(){
+  document.getElementById('cityList').innerHTML=cities.sort((a,b)=>b.jobs-a.jobs).map((c,i)=>`
+    <div class="city-item${i===0?' sel':''}" onclick="selectCity(${cities.indexOf(c)})">
+      <div class="ci-rank">#${i+1}</div>
+      <div>
+        <div class="ci-name">${c.name}</div>
+        <div class="ci-jobs">${c.jobs} lowongan cocok</div>
+      </div>
+      <div class="ci-badge tag ${c.match>=90?'tag-cyan':c.match>=80?'tag-violet':'tag-gold'}">${c.match}% match</div>
+    </div>`).join('')
+}
+
+function selectCity(i){
+  const c=cities[i]
+  document.querySelectorAll('.city-item').forEach(el=>el.classList.remove('sel'))
+  const sortedIdx=cities.sort((a,b)=>b.jobs-a.jobs).indexOf(cities[i])
+  document.querySelectorAll('.city-item')[sortedIdx]?.classList.add('sel')
+  document.getElementById('mapTotal').textContent=`${c.jobs} Lowongan di ${c.name}`
+  toast(`📍 ${c.name}: ${c.jobs} lowongan · ${c.match}% match`,'🗺️')
+}
+
+function toggleRemote(el){
+  el.classList.toggle('on')
+  const sw=el.querySelector('.rt-switch')
+  sw?.classList.toggle('on')
+  toast(`⚡ Filter diperbarui`,'🔧')
+}
+
+buildMap(); buildCityList()
+</script>
+</body>
+</html>
